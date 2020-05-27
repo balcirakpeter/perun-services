@@ -12,7 +12,8 @@ my $SCRIPT_VERSION = "3.0.0";
 perunServicesInit::init;
 my $DIRECTORY = perunServicesInit::getDirectory;
 my $fileName = "$DIRECTORY/$::SERVICE_NAME".".ldif";
-my $baseDnFileName = "$DIRECTORY/baseDN";
+my $baseGroupDnFileName = "$DIRECTORY/groupBaseDN";
+my $baseUserDnFileName = "$DIRECTORY/userBaseDN";
 
 #Get hierarchical data without expired members
 my $data = perunServicesInit::getHierarchicalData(1);
@@ -38,10 +39,17 @@ my $baseDN = $facilityAttributes{$A_F_BASE_DN};
 my $baseDNforSpecial = "OU=Services,OU=Perun,OU=MU,DC=ucn,DC=muni,DC=cz";
 
 #
-# PRINT BASE_DN FILE
+# PRINT GROUP BASE_DN FILE
 #
-open FILE,">:encoding(UTF-8)","$baseDnFileName" or die "Cannot open $baseDnFileName: $! \n";
+open FILE,">:encoding(UTF-8)","$baseGroupDnFileName" or die "Cannot open $baseGroupDnFileName: $! \n";
 print FILE $baseGroupDN;
+close(FILE);
+
+#
+# PRINT USER BASE_DN FILE
+#
+open FILE,">:encoding(UTF-8)","$baseUserDnFileName" or die "Cannot open $baseUserDnFileName: $! \n";
+print FILE $baseDN;
 close(FILE);
 
 my @resourcesData = $data->getChildElements;
